@@ -19,3 +19,13 @@ var command = process.argv[2],
 var arg = process.argv[3],
 var requestMsg = "",
 var responseMsg = "";
+
+//Console log and append file user request and data respones
+function logAndAppend(input, output) {
+  console.log(output);
+  fs.appendFile("log.txt", input + "\n" + output, function(error) {
+    if (error) {
+      throw error;
+    }
+  })
+};
