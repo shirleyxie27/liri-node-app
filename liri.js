@@ -110,3 +110,16 @@ function runCommand() {
     });
   }
 }
+
+//If user requests "do-what-it-says"...
+if (command === "do-what-it-says") {
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    var dataArr = data.split(",");
+    command = dataArr[0];
+    arg = dataArr[1];
+    runCommand();
+  });
+}
+else {
+  runCommand();
+}
