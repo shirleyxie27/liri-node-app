@@ -29,3 +29,22 @@ function logAndAppend(input, output) {
     }
   })
 };
+
+//Create function to execute user request
+function runCommand() {
+  //If user requests "my-tweets"...
+  if (command === "my-tweets") {
+    twitterClient.get("statuses/user_timeline", function(error, tweets, response) {
+      if (error) {
+        throw error;
+      }
+      var tweetsArr = [];
+      for (i = 0; i < tweets.length; i++) {
+        tweetsArr.push(tweets[i].text);
+      }
+      requestMsg = "COMMAND: " + command;
+      responseMsg = "================================================\n" +
+                    "Last 20 tweets:\n" + tweetsArr.join("\n") + "\n\n";
+      logAndAppend(requestMsg, responseMsg);
+    });
+  }
