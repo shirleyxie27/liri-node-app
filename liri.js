@@ -48,3 +48,34 @@ function runCommand() {
       logAndAppend(requestMsg, responseMsg);
     });
   }
+
+//If user requests "spotify-this song"...
+  if (command === "spotify-this-song") {
+    if (arg === undefined) {
+      requestMsg = "COMMAND: " + command;
+      responseMsg = "================================================\n" +
+                    "Title: The Sign\n" + "Album: The Sign (1993)\n" +
+                    "Artist(s): Ace of Base\n" +
+                    "Preview: https://p.scdn.co/mp3-preview/4c463359f67dd3546db7294d236dd0ae991882ff?cid=null\n\n";
+      logAndAppend(requestMsg, responseMsg);
+      return;
+    }
+    spotify.search({type: "track", query: arg.trim()}, function(error, response) {
+      if (error) {
+        throw error;
+      }
+      var track = response.tracks.items[0];
+      var title = track.name;
+      var album = track.album.name;
+      var artists = [];
+      for (i = 0; i < track.artists.length; i++) {
+        artists.push(" " + track.artists[i].name);
+      }
+      var previewURL = track.preview_url;
+      requestMsg = "COMMAND: " + command + "," + arg;
+      responseMsg = "================================================\n" +
+                    "Title: " + title + "\n" + "Album: " + album + "\n" +
+                    "Artist(s):" + artists + "\n" + "Preview: " + previewURL + "\n\n";
+      logAndAppend(requestMsg, responseMsg);
+    });
+  }
