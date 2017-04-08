@@ -49,7 +49,7 @@ function runCommand() {
     });
   }
 
-//If user requests "spotify-this song"...
+//If user requests "spotify-this-song"...
   if (command === "spotify-this-song") {
     if (arg === undefined) {
       requestMsg = "COMMAND: " + command;
@@ -79,3 +79,34 @@ function runCommand() {
       logAndAppend(requestMsg, responseMsg);
     });
   }
+
+//If user requests "movie-this"...
+  if (command === "movie-this") {
+    if (arg === undefined) {
+      arg = "Mr. Nobody";
+    }
+    var omdbURL = "http://www.omdbapi.com/?t=" + arg.trim();
+    request(omdbURL, function(error, response, body) {
+      if (error) {
+        throw error;
+      }
+      var movie = JSON.parse(body);
+      var title = movie.Title;
+      var year = movie.Year;
+      var imdbRating = movie.imdbRating;
+      var country = movie.Country;
+      var language = movie.Language;
+      var plot = movie.Plot;
+      var actors = movie.Actors;
+      var rottenTomatoes = movie.Ratings[1].Value;
+      requestMsg = "COMMAND: " + command;
+      responseMsg = "================================================\n" +
+                    "Title: " + title + "\n" + "Year: " + year + "\n" +
+                    "IMDB Rating: " + imdbRating + "\n" +
+                    "Rotten Tomatoes Rating: " + rottenTomatoes + "\n" +
+                    "Country: " + country + "\n" + "Language: " + language + "\n" +
+                    "Actors: " + actors + "\n" + "Synopsis: " + plot + "\n\n";
+      logAndAppend(requestMsg, responseMsg);
+    });
+  }
+}
