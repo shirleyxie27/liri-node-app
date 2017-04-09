@@ -4,20 +4,26 @@ var keys = require("./keys.js");
 var fs = require('fs');
 var spotify = require('spotify');
 var request = require('request');
-var twitter = require('twitter');
+var Twitter = require('twitter');
 
 //Store twitter keys
 var twitterClient = new Twitter ({
-  consumer_key: keys.TWITTER.CONSUMER_KEY,
-  consumer_secret: keys.TWITTER.CONSUMER_SECRET,
-  access_token_key: keys.TWITTER.ACCESS_TOKEN_KEY,
-  access_token_secret: keys.TWITTER.ACCESS_TOKEN_SECRET
+  consumer_key: keys.twitterKeys.consumer_key,
+  consumer_secret: keys.twitterKeys.consumer_secret,
+  access_token_key: keys.twitterKeys.access_token_key,
+  access_token_secret: keys.twitterKeys.access_token_secret
 });
 
+//Liri takes the following arguments
+// my-tweets
+// spotify-this-song
+// movie-this
+// do-what-it-says
+
 //Store user request and declare variables
-var command = process.argv[2],
-var arg = process.argv[3],
-var requestMsg = "",
+var command = process.argv[2];
+var arg = process.argv[3];
+var requestMsg = "";
 var responseMsg = "";
 
 //Console log and append file user request and data respones
@@ -36,7 +42,7 @@ function runCommand() {
   if (command === "my-tweets") {
     twitterClient.get("statuses/user_timeline", function(error, tweets, response) {
       if (error) {
-        throw error;
+        console.log(error);
       }
       var tweetsArr = [];
       for (i = 0; i < tweets.length; i++) {
